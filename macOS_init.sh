@@ -15,6 +15,7 @@
 #	整合加域和不加域；  
 #################################################################
 
+# 将contoso.com更改为本地局域网的域名
 domain="contoso.com"
 add_domain_user=addtest
 login_user=$(whoami)
@@ -104,8 +105,8 @@ do
 	fi
 done
 
-# 根据工号设置电脑名称
-NAME=EBJ$NUM
+# 根据工号设置电脑名称，前缀为BJ
+NAME=BJ$NUM
 echo $pwd_2 | sudo -S scutil --set HostName $NAME &> /dev/null
 echo $pwd_2 | sudo -S scutil --set LocalHostName $NAME &> /dev/null
 echo $pwd_2 | sudo -S scutil --set ComputerName $NAME &> /dev/null
