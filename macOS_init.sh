@@ -220,11 +220,14 @@ do
 						echo "$USER 已是本机账户！"
 						echo "++++++++++++++++++++++++++++"
 					else
+						MAXID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ug | tail -1)
+						USERID=$((MAXID+1))
 						echo $pwd_2 | sudo -S dscl . -create /Users/$USER 
 						echo $pwd_2 | sudo -S dscl . -create /Users/$USER UserShell /bin/zsh
 						echo $pwd_2 | sudo -S dscl . -create /Users/$USER RealName $USER
-						echo $pwd_2 | sudo -S dscl . -create /Users/$USER UniqueID 506  && echo "已创建用户账户$USER" || echo "创建用户账户$USER 失败！"
-						echo $pwd_2 | sudo -S dscl . -create /Users/$USER PrimaryGroupID 1001
+						echo $pwd_2 | sudo -S dscl . -create /Users/$USER UniqueID $USERID  && echo "已创建用户账户$USER" || echo "创建用户账户$USER 失败！"
+						# 组ID需设置为已存在的ID，否则360天擎打开会报错
+						echo $pwd_2 | sudo -S dscl . -create /Users/$USER PrimaryGroupID 20
 						echo $pwd_2 | sudo -S dscl . -create /Users/$USER NFSHomeDirectory /Users/$USER
 						echo $pwd_2 | sudo -S dscl . -passwd /Users/$USER ''
 						echo $pwd_2 | sudo -S dscl . -read /groups/admin  GroupMembership |grep $USER &> /dev/null					
